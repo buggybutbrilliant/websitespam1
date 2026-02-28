@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { BUGGY_SYSTEM, BRILLIANT_SYSTEM, INITIAL_BUGGY_MESSAGE } from './chatConfig';
 import './chat-widget.css';
 
-const API_KEY = import.meta.env.OPENROUTER_KEY;
+const API_KEY = import.meta.env.VITE_OPENROUTER_KEY;
 const MODEL = 'arcee-ai/trinity-large-preview:free';
 
 async function callAI(messages, systemPrompt) {
@@ -11,6 +11,7 @@ async function callAI(messages, systemPrompt) {
     headers: {
       'Authorization': `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://buggybutbrilliant.com/',
       'X-Title': 'BuggyButBrilliant',
     },
     body: JSON.stringify({
