@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { BUGGY_SYSTEM, BRILLIANT_SYSTEM, INITIAL_BUGGY_MESSAGE } from './chatConfig';
 import './chat-widget.css';
 
-const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+const API_KEY = import.meta.env.OPENROUTER_KEY;
 const MODEL = 'arcee-ai/trinity-large-preview:free';
 
 async function callAI(messages, systemPrompt) {
