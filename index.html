@@ -7,9 +7,6 @@
     <meta name="theme-color" content="#0a0a0f" />
     <link rel="icon" type="image/x-icon" sizes="32x32" href="/favicon.ico" />
 
-    <!-- Preload hero video -->
-    <link rel="preload" href="/videos/intro.mp4" as="video" type="video/mp4" />
-
     <!-- Google Fonts: Syne (display) + DM Sans (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -33,6 +30,14 @@
       <input name="timeline" type="text" /> 
       <textarea name="notes"></textarea>
     </form>
+    <form name="chat-booking" data-netlify="true" netlify-honeypot="bot-field" hidden> 
+      <input type="hidden" name="form-name" value="chat-booking" /> 
+      <input name="bot-field" /> 
+      <input name="name" type="text" /> 
+      <input name="email" type="email" /> 
+      <input name="projectType" type="text" /> 
+      <input name="datetime" type="text" /> 
+    </form> 
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
