@@ -58,7 +58,7 @@ export default function ChatWidget() {
     try {
       if (mode === 'buggy') {
         const reply = await callAI(newMessages, BUGGY_SYSTEM);
-        if (reply.trim() === 'HAND_OFF_TO_BRILLIANT') {
+        if (reply.trim().toUpperCase() === 'HAND_OFF_TO_BRILLIANT') {
           setMode('brilliant');
           const handoff = { role: 'brilliant', content: "Great, let me take it from here! 💡 I'm Brilliant. I'll help set up a quick call. First — what's your full name?" };
           setMessages(prev => [...prev, handoff]);
@@ -71,10 +71,15 @@ export default function ChatWidget() {
         setBrilliantData(newData);
 
         const reply = await callAI(newMessages, BRILLIANT_SYSTEM);
-        if (reply.trim() === 'SUBMIT_FORM') {
-          await submitToNetlify(newData);
-          setMessages(prev => [...prev, { role: 'brilliant', content: "✅ All done! Your meeting request has been sent to the team. We'll reach out within 24 hours. Talk soon! 💡" }]);
-          setMode('done');
+        if (reply.trim().toUpperCase() === 'SUBMIT_FORM') {
+          await submitToNetlify(brilliantData);
+          setMessages(prev => [...prev, { 
+            role: 'brilliant', 
+            content: "✅ All done! Your meeting request has been sent. We'll reach out within 24 hours. 💡 Is there anything else I can help you with?" 
+          }]);
+          setMode('buggy');
+          setStep(0);
+          setBrilliantData({});
         } else {
           setMessages(prev => [...prev, { role: 'brilliant', content: reply }]);
           setStep(prev => Math.min(prev + 1, 3));
@@ -114,7 +119,7 @@ export default function ChatWidget() {
               <span className="cw-status-dot" />{mode === 'done' ? 'Done' : 'Online'}
             </div>
           </div>
-          {mode !== 'buggy' && <button className="cw-reset" onClick={reset} title="Start over">↺</button>}
+          <button className="cw-reset" onClick={reset} title="Start over">↺</button>
         </div>
 
         <div className="cw-messages">
@@ -139,19 +144,17 @@ export default function ChatWidget() {
           <div ref={bottomRef} />
         </div>
 
-        {mode !== 'done' && (
-          <div className="cw-input-row">
-            <input
-              className="cw-input"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={handleKey}
-              placeholder={mode === 'brilliant' ? 'Type your answer...' : 'Ask me anything...'}
-              disabled={loading}
-            />
-            <button className="cw-send" onClick={sendMessage} disabled={loading || !input.trim()} aria-label="Send">→</button>
-          </div>
-        )}
+        <div className="cw-input-row">
+          <input
+            className="cw-input"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={handleKey}
+            placeholder={mode === 'brilliant' ? 'Type your answer...' : 'Ask me anything...'}
+            disabled={loading}
+          />
+          <button className="cw-send" onClick={sendMessage} disabled={loading || !input.trim()} aria-label="Send">→</button>
+        </div>
       </div>
     </>
   );
