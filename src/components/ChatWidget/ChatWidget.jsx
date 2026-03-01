@@ -23,17 +23,16 @@ async function callAI(messages, systemPrompt) {
 }
 
 async function submitToNetlify(formData) {
-  await fetch('/', {
+  await fetch('/.netlify/functions/chat-submit', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      'form-name': 'chat-booking',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
       name: formData.name || '',
       email: formData.email || '',
       phone: formData.phone || '',
       projectType: formData.projectType || '',
       datetime: formData.datetime || '',
-    }).toString(),
+    }),
   });
 }
 

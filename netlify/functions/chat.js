@@ -49,8 +49,8 @@ exports.handler = async (event) => {
       {
         'Authorization': 'Bearer ' + OPENROUTER_KEY,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://buggybutbrilliant.netlify.app',
-        'X-Title': 'BuggyButBrilliant',
+        'HTTP-Referer': 'https://spamwebtestdonttouch.netlify.app',
+        'X-Title': 'SpamWebsite',
       },
       bodyStr
     );
