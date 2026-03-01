@@ -1,15 +1,17 @@
+const { URL } = require('url');
 const https = require('https');
 
 function httpsPost(url, headers, body) {
   return new Promise((resolve, reject) => {
     const urlObj = new URL(url);
+    const bodyBuffer = Buffer.from(body, 'utf8');
     const options = {
       hostname: urlObj.hostname,
       path: urlObj.pathname,
       method: 'POST',
       headers: {
         ...headers,
-        'Content-Length': Buffer.byteLength(body),
+        'Content-Length': bodyBuffer.length,
       },
     };
     const req = https.request(options, (res) => {
@@ -18,7 +20,7 @@ function httpsPost(url, headers, body) {
       res.on('end', () => resolve({ status: res.statusCode, body: data }));
     });
     req.on('error', reject);
-    req.write(body);
+    req.write(bodyBuffer);
     req.end();
   });
 }
@@ -31,19 +33,26 @@ exports.handler = async (event) => {
   const OPENROUTER_KEY = process.env.OPENROUTER_KEY;
 
   if (!OPENROUTER_KEY) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'API key not configured' }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'API key not configured', hint: 'OPENROUTER_KEY env var is missing in Netlify' })
+    };
   }
+
+  const bodyStr = typeof event.body === 'string'
+    ? event.body
+    : JSON.stringify(event.body);
 
   try {
     const result = await httpsPost(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        'Authorization': `Bearer ${OPENROUTER_KEY}`,
+        'Authorization': 'Bearer ' + OPENROUTER_KEY,
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://buggybutbrilliant.netlify.app',
         'X-Title': 'BuggyButBrilliant',
       },
-      event.body
+      bodyStr
     );
 
     return {
