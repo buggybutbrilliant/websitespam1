@@ -28,6 +28,7 @@ async function submitToNetlify(formData) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       'form-name': 'chat-booking',
+      'bot-field': '',
       ...formData
     }).toString(),
   });
