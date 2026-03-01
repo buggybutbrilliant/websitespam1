@@ -85,7 +85,7 @@ export default function ChatWidget() {
           setBrilliantData({});
         } else {
           setMessages(prev => [...prev, { role: 'brilliant', content: reply }]);
-          setStep(prev => Math.min(prev + 1, 3));
+          setStep(prev => Math.min(prev + 1, 4));
         }
       }
     } catch {
