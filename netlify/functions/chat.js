@@ -36,11 +36,11 @@ exports.handler = async (event) => {
 
   try {
     const result = await httpsPost(
-      ' `https://openrouter.ai/api/v1/chat/completions` ',
+      'https://openrouter.ai/api/v1/chat/completions',
       {
         'Authorization': `Bearer ${OPENROUTER_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': ' `https://buggybutbrilliant.netlify.app` ',
+        'HTTP-Referer': 'https://buggybutbrilliant.netlify.app',
         'X-Title': 'BuggyButBrilliant',
       },
       event.body
