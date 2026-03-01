@@ -28,8 +28,11 @@ async function submitToNetlify(formData) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       'form-name': 'chat-booking',
-      'bot-field': '',
-      ...formData
+      name: formData.name || '',
+      email: formData.email || '',
+      phone: formData.phone || '',
+      projectType: formData.projectType || '',
+      datetime: formData.datetime || '',
     }).toString(),
   });
 }
@@ -67,7 +70,7 @@ export default function ChatWidget() {
           setMessages(prev => [...prev, { role: 'buggy', content: reply }]);
         }
       } else {
-        const steps = ['name', 'email', 'projectType', 'datetime'];
+        const steps = ['name', 'email', 'phone', 'projectType', 'datetime'];
         const newData = { ...brilliantData, [steps[step]]: input.trim() };
         setBrilliantData(newData);
 
